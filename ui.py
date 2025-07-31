@@ -7,9 +7,12 @@ from autogen_ext.models.openai import OpenAIChatCompletionClient
 from dotenv import load_dotenv
 
 load_dotenv()
-client = OpenAIChatCompletionClient(model="gpt-4o", api_key=os.getenv("OPENAI_API_KEY"))
 
-def create_agents():
+def get_client():
+    return OpenAIChatCompletionClient(model="gpt-4o", api_key=os.getenv("OPENAI_API_KEY"))
+
+
+def create_agents(client):
     return [
         AssistantAgent(
             "MarketResearchAgent",
@@ -33,7 +36,7 @@ def create_agents():
             "MockDevelopmentAgent",
             model_client=client,
             system_message=(
-                "企画案に基づいてモックの概要を設計してください。"
+                "企画案に基づいてモックの概要を設計してください。また、使用するライブラリは新しいバージョンを使ってください。"
                 "モックの概要について、ProductPlanningAgentからフィードバックを受けてください"
                 " ProductPlanningAgentから良い評価が得られたら、Dockerfileで実行できるstreamlitアプリの実装を行なってください"
                 "モックの実装が完了したら、ソースコードと実行のためのDockerfileを記載してください"
@@ -43,8 +46,9 @@ def create_agents():
     ]
 
 async def run_team(task: str):
+    client = get_client()
     termination = TextMentionTermination("TERMINATE") | MaxMessageTermination(max_messages=50)
-    team = RoundRobinGroupChat(create_agents(), termination_condition=termination)
+    team = RoundRobinGroupChat(create_agents(client), termination_condition=termination)
     stream = team.run_stream(task=task)
     result = await Console(stream)
     await client.close()
