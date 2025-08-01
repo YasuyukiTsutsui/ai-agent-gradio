@@ -11,6 +11,8 @@ RUN pip install --upgrade pip \
     && pip install -r requirements.txt
 
 RUN pip install --upgrade autogen
+RUN pip install --upgrade gradio
+
 
 # アプリのコードをコピー
 COPY . .
