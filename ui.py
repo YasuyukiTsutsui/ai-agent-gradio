@@ -28,10 +28,10 @@ def create_agents(client):
             "ProductPlanningAgent",
             model_client=client,
             system_message=(
-                "市場調査を受けてプロダクト企画を立ててください。具体的なモック開発案を "
-                "MockDevelopmentAgentに引き継いでください。"
-                "デモアプリの内容について、MockDevelopmentAgentへフィードバックしてください。"
-                "ただし、ユーザーフィードバックはモック作成後に行うので必要ありません。"
+                "市場調査を受けてプロダクト企画を立ててください。具体的なデモアプリ開発案を "
+                "DemoDevelopmentAgentに引き継いでください。"
+                "デモアプリの内容について、DemoDevelopmentAgentへフィードバックしてください。"
+                "ただし、ユーザーフィードバックはデモアプリ作成後に行うので必要ありません。"
             )
         ),
         AssistantAgent(
@@ -42,24 +42,23 @@ def create_agents(client):
                 "デモアプリの概要について、ProductPlanningAgentからフィードバックを受けてください。"
                 " ProductPlanningAgentから良い評価が得られたら、Dockerfileで実行できるstreamlitアプリの実装を行なってください。"
                 "デモアプリの実装が完了したら、ソースコードと実行のためのDockerfileを記載してください。"
-                "'TERMINATE' とだけ書いて応答を終了してください。"
             )
         ),
         AssistantAgent(
             "DebuggerAgent",
             model_client=client,
-    system_message=(
-        "あなたはソフトウェア開発における高度なデバッガー兼レビュアーです。"
-        "DemoDevelopmentAgent から提供されるコードに対してコードレビューを行い、"
-        "構文エラー、実行時エラー、論理エラー、依存ライブラリの誤りなどを確認してください。"
+            system_message=(
+                "あなたはソフトウェア開発における高度なデバッガー兼レビュアーです。"
+                "DemoDevelopmentAgent から提供されるコードに対してコードレビューを行い、"
+                "構文エラー、実行時エラー、論理エラー、依存ライブラリの誤りなどを確認してください。"
 
-        "バグが発見された場合は、修正済みのコード全体を出力してください。その後、'TERMINATE' とだけ書いて応答を終了してください。"
+                "バグが発見された場合は、修正済みのコード全体を出力してください。その後、'TERMINATE' とだけ書いて応答を終了してください。"
 
-        "バグが見つからなかった場合は「バグは見つかりませんでした。」と明言した上で、"
-        "'TERMINATE' とだけ書いて応答を終了してください。"
+                "バグが見つからなかった場合は「バグは見つかりませんでした。」と明言した上で、"
+                "'TERMINATE' とだけ書いて応答を終了してください。"
 
-        "コードの一部のみを出力したり、'TERMINATE' を書き忘れたりしないでください。"
-    )
+                "コードの一部のみを出力したり、'TERMINATE' を書き忘れたりしないでください。"
+            )
         )
     ]
 
