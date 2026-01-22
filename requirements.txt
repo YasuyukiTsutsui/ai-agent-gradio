@@ -1,5 +1,12 @@
-gradio
-autogen_agentchat
-autogen_ext
-dotenv
-openai
+# Web UI framework
+gradio>=4.0.0
+
+# AutoGen multi-agent framework
+autogen-agentchat>=0.4.0
+autogen-ext[openai]>=0.4.0
+
+# Environment variables
+python-dotenv>=1.0.0
+
+# OpenAI API client
+openai>=1.0.0
